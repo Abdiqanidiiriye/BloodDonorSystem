@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Blood Donor Management System</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            padding: 25px;
+        }
+
+        h1 {
+            color: #c62828;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button, .register {
+            background: #c62828;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #c62828;
+            color: white;
+        }
+
+        .available {
+            color: green;
+            font-weight: bold;
+        }
+
+        .unavailable {
+            color: red;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Blood Donor Management System</h1>
+
+<div class="container">
+
+    <a href="{% url 'register_donor' %}" class="register">
+        + Register New Donor
+    </a>
+
+    <h3>Search Donors</h3>
+
+    <form method="GET">
+
+        <select name="blood_group">
+
+            <option value="">All Blood Groups</option>
+
+            {% for group in blood_groups %}
+
+                <option value="{{ group.0 }}">
+                    {{ group.1 }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <input
+            type="text"
+            name="city"
+            placeholder="Enter city"
+        >
+
+        <button type="submit">Search</button>
+
+        <a href="{% url 'donor_list' %}">
+            Reset
+        </a>
+
+    </form>
+
+    <h3>Registered Donors</h3>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Name</th>
+                <th>Blood Group</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>City</th>
+                <th>Availability</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for donor in donors %}
+
+            <tr>
+
+                <td>{{ donor.name }}</td>
+
+                <td>{{ donor.blood_group }}</td>
+
+                <td>{{ donor.phone }}</td>
+
+                <td>{{ donor.email }}</td>
+
+                <td>{{ donor.city }}</td>
+
+                <td>
+
+                    {% if donor.available %}
+
+                        <span class="available">
+                            Available
+                        </span>
+
+                    {% else %}
+
+                        <span class="unavailable">
+                            Unavailable
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    <form method="POST"
+                        action="{% url 'toggle_availability' donor.id %}">
+
+                        {% csrf_token %}
+
+                        <button type="submit">
+                            Change Status
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="7">
+                    No donors found.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>
