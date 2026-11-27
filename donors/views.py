@@ -45,9 +45,7 @@ def register_donor(request):
     'form': form
 })
 
-
-
-# Change donor availability
+# Change donor Availability
 @require_POST
 def toggle_availability(request, donor_id):
 
