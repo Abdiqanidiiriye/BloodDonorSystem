@@ -37,5 +37,13 @@ class BloodDonor(models.Model):
     auto_now=True
     )
 
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=['blood_group', 'city'],
+                name='donor_blood_city_idx'
+            ),
+        ]
+        
     def __str__(self):
         return self.name
