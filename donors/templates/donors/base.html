@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blood Donor Management System{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #f4f4f4; }
+        .navbar-brand { font-weight: bold; }
+        .btn-blood { background: #c62828; border-color: #c62828; color: #fff; }
+        .btn-blood:hover { background: #a31f1f; border-color: #a31f1f; color: #fff; }
+        .card { border: none; border-radius: 10px; }
+        h1, h2, h3 { color: #c62828; }
+        th { background: #c62828 !important; color: #fff !important; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark" style="background:#c62828;">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'donor_list' %}">🩸 Blood Donor System</a>
+        <div>
+            <a class="btn btn-light btn-sm" href="{% url 'donor_list' %}">All Donors</a>
+            <a class="btn btn-light btn-sm" href="{% url 'register_donor' %}">+ Register</a>
+        </div>
+    </div>
+</nav>
+
+<main class="container py-4">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+</main>
+
+</body>
+</html>
